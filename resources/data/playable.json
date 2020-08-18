@@ -1,0 +1,26 @@
+{
+    "character1": {
+        "unlocked": 1,
+        "strength_multiplier": 1,
+        "dexterity_multiplier": 0.8,
+        "intelligence_multiplier": 1.2
+    },
+    "character2": {
+        "unlocked": 0,
+        "strength_multiplier": 1.3,
+        "dexterity_multiplier": 0.7,
+        "intelligence_multiplier": 0.9
+    },
+    "character3": {
+        "unlocked": 0,
+        "strength_multiplier": 0.9,
+        "dexterity_multiplier": 1.5,
+        "intelligence_multiplier": 0.7
+    },
+    "character4": {
+        "unlocked": 0,
+        "strength_multiplier": 1.1,
+        "dexterity_multiplier": 1.1,
+        "intelligence_multiplier": 1.1
+    }
+}

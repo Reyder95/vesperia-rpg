@@ -17,9 +17,7 @@ export var strength : int    # Increases raw strength damage dealt (harder hitti
 export var dexterity : int    # Increases nimble / agile damage dealt (lighter but faster hitting weapons)
 export var intelligence : int     # Increases magic damage dealt and maximum amount of magicka stored
 
-func scale_stats():
-	attack = attack * 20
-	
+# Print the stats of the current object
 func print_stats():
 	print("Name: " + char_name)
 	print("Level: " + str(level))

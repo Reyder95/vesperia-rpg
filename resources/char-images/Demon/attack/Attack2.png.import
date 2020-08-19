@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Satyr_01_Idle Blinking_000.png-6f4fa5f24ec238ae3bac4b262df44c8e.stex"
+path="res://.import/Attack2.png-08a438591644bd298550a6fa3fa49487.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/char-images/ryuko/idle/Satyr_01_Idle Blinking_000.png"
-dest_files=[ "res://.import/Satyr_01_Idle Blinking_000.png-6f4fa5f24ec238ae3bac4b262df44c8e.stex" ]
+source_file="res://resources/char-images/Demon/attack/Attack2.png"
+dest_files=[ "res://.import/Attack2.png-08a438591644bd298550a6fa3fa49487.stex" ]
 
 [params]
 

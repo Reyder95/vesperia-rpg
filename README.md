@@ -1,6 +1,10 @@
 # Vesperia RPG
 **Note: Name is subject to change**
 
+## Technologies
+- [Godot (stable)](https://godotengine.org/) - Game engine used
+- GDScript - Proprietary scripting language for Godot engine. Based off of Python.
+
 ## What is Vesperia RPG?
 A throwback to old school turn-based JRPGs. FINAL FANTASY is a big inspiration, and I really enjoyed FINAL FANTASY III. This game will take the turn-based combat and random encounters from FINAL FANTASY, mixed with some common loot-based tropes used in modern-day games, to craft an experience that will cater to both old school and new age players.
 

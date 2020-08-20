@@ -17,6 +17,8 @@ onready var left_side_hp = $UI/LeftHP    # The health for the left side of entit
 onready var spell_panel = $UI/SpellPanel
 onready var state_label = $UI/State    # DEBUG: Displays state on screen
 
+var player_spells
+
 # All of the possible states that the battle can enter
 enum STATES {
 	PLAYER,
@@ -27,6 +29,8 @@ enum STATES {
 
 # Initialize the battle
 func _ready():
+	
+	player_spells = preload("res://Spells.tscn").instance()
 	
 	# DEBUG: Just pushes one playable character, will be adjusted to support all the playable characters
 	players.push_back(PlayerData.char1)
@@ -80,6 +84,7 @@ func _ready():
 		spell_panel.get_node("Spells").add_item( LoadData.spell_data[i].name, load("res://resources/spell_icons/" + LoadData.spell_data[i].name + ".png"))
 		spell_panel.get_node("Spells").set_item_tooltip_enabled(i, true)
 		spell_panel.get_node("Spells").set_item_tooltip(i, LoadData.spell_data[i].description)
+		spell_panel.get_node("Spells").set_item_metadata(i, LoadData.spell_data[i].id)
 		
 	current_state = STATES.PLAYER    # Set the current state as PLAYER
 	handle_states()    # Do things based on the current state
@@ -123,8 +128,9 @@ func handle_states():
 			interface.hide()    # Hide the interface
 
 # When someone does damage, this is the function that is called
-func _handle_damage_dealt(attacker, target, number, side):
-	attacker._attack_entity(target)    # Make the attacker attack the target
+func _handle_damage_dealt(attacker, target, number, side, type):
+	if type == "attack":
+		attacker._attack_entity(target)    # Make the attacker attack the target
 	
 	if target.current_health == 0:
 		print(target.char_name + " is dead")
@@ -146,7 +152,7 @@ func _handle_player_turn(choice):
 			player_turn_order[0].get_node("AnimatedSprite").play("idle")
 			
 			var randomTarget = randi() % enemies.size()    # DEBUG: Choose a random target. This will be changed
-			_handle_damage_dealt(player_turn_order[0], enemies[randomTarget], randomTarget+1, "left")    # Deal damage to target
+			_handle_damage_dealt(player_turn_order[0], enemies[randomTarget], randomTarget+1, "left", "attack")    # Deal damage to target
 			player_turn_order.pop_front()    # Remove player from the turn order
 			
 			# If there is nobody left, set state to ENEMY and handle that state
@@ -167,7 +173,7 @@ func _handle_enemy_turn():
 		
 		# Deal damage to a random target
 		var randomTarget = randi() % players.size()
-		_handle_damage_dealt(enemy_turn_order[0], players[randomTarget], randomTarget+1, "right")
+		_handle_damage_dealt(enemy_turn_order[0], players[randomTarget], randomTarget+1, "right", "attack")
 		
 		enemy_turn_order.pop_front()    # Remove this person from the turn queue
 	
@@ -186,3 +192,26 @@ func _on_Spells_pressed():
 
 func _on_SpellExit_pressed():
 	spell_panel.hide()
+
+
+func _on_Spells_item_activated(index):
+	spell_panel.hide()
+	
+	if player_turn_order.size() <= 1:
+		interface.hide()
+		
+	var chosen_spell = spell_panel.get_node("Spells").get_item_metadata(index)
+	
+	enemies[0].add_child(load("res://resources/Animations/Effects/Spell_" + str(chosen_spell) + ".tscn").instance())
+	
+	var myChild = enemies[0].get_node("Spell")
+	myChild.play("effect")
+	yield(myChild, "animation_finished")
+	enemies[0].remove_child(myChild)
+	
+	player_spells.get_node(str(chosen_spell))._cast_spell(player_turn_order[0], enemies[0])
+	
+	_handle_damage_dealt(player_turn_order[0], enemies[0], 1, "left", "spell")
+	
+	current_state = STATES.ENEMY
+	handle_states()

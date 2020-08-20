@@ -25,5 +25,4 @@ animations = [ {
 position = Vector2( 32, -16 )
 frames = SubResource( 1 )
 animation = "attack"
-frame = 1
 playing = true

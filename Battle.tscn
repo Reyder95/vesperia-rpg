@@ -243,4 +243,5 @@ position = Vector2( 256, 640 )
 [connection signal="pressed" from="UI/BottomPanel/BattleUI/Spells" to="." method="_on_Spells_pressed"]
 [connection signal="pressed" from="UI/BottomPanel/BattleUI/Items" to="." method="_on_Attack_pressed"]
 [connection signal="pressed" from="UI/BottomPanel/BattleUI/Run" to="." method="_on_Attack_pressed"]
+[connection signal="item_activated" from="UI/SpellPanel/Spells" to="." method="_on_Spells_item_activated"]
 [connection signal="pressed" from="UI/SpellPanel/SpellExit" to="." method="_on_SpellExit_pressed"]

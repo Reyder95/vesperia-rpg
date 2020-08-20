@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "CharacterEntity",
 "language": "GDScript",
 "path": "res://scripts/Entity.gd"
+}, {
+"base": "Node2D",
+"class": "Spell",
+"language": "GDScript",
+"path": "res://scripts/Spell.gd"
 } ]
 _global_script_class_icons={
-"CharacterEntity": ""
+"CharacterEntity": "",
+"Spell": ""
 }
 
 [application]

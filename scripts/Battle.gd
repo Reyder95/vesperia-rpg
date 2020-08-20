@@ -77,6 +77,11 @@ func _ready():
 		
 	current_state = STATES.PLAYER    # Set the current state as PLAYER
 	handle_states()    # Do things based on the current state
+	
+func _process(delta):
+	if Input.is_action_pressed("ui_down"):
+		PlayerData.save_data()
+		print("Saved!")
 
 # Load the stats of the enemy
 func load_stats(scene, enemy_object):
@@ -114,6 +119,9 @@ func handle_states():
 # When someone does damage, this is the function that is called
 func _handle_damage_dealt(attacker, target, number, side):
 	attacker._attack_entity(target)    # Make the attacker attack the target
+	
+	if target.current_health == 0:
+		print(target.char_name + " is dead")
 	
 	# Use side to determine which side to modify the HP of
 	if side == "right":

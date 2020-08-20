@@ -26,3 +26,9 @@ A set of items, gear, and spells that a player can put together to break the lim
 - Speed builds that allow a character to attack more than once a turn.
 
 Builds could be based on the entire team.
+
+## Assets Used
+At the current moment, a lot of assets I've used for prototyping are available online for free. As of the current time, I do not own any assets used. Here are the locations where I've looked for assets as of right now. **Do note, in the end game I will have completely made my own custom assets. These are just for prototyping**
+
+- [Craftpix](https://craftpix.net/) - Great 2d asset website. There are both paid and free options here.
+- [Itch.io](https://itch.io/game-assets) - Another great location for game assets!

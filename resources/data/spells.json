@@ -2,6 +2,11 @@
     {
         "id": 1,
         "name": "Fireball",
-        "icon": null
+        "description": "A blazing ball of fire that decimates one foe."
+    },
+    {
+        "id": 2,
+        "name": "Ice Beam",
+        "description": "A beam of frost that pierces one foe."
     }
 ]

@@ -14,6 +14,7 @@ onready var right_side = $BattleRight    # The right side of entities in the bat
 onready var right_side_hp = $UI/RightHP    # The health for the right side of entities
 onready var left_side = $BattleLeft    # The left side of entities in the battle
 onready var left_side_hp = $UI/LeftHP    # The health for the left side of entities
+onready var spell_panel = $UI/SpellPanel
 onready var state_label = $UI/State    # DEBUG: Displays state on screen
 
 # All of the possible states that the battle can enter
@@ -74,6 +75,11 @@ func _ready():
 		# Set the left side's HP UI
 		left_side_hp.get_node("pos" + str(i+1)).show()
 		left_side_hp.get_node("pos" + str(i+1)).text = "Health: " + str(enemy.current_health) + "/" + str(enemy.maximum_health)
+		
+	for i in range(0, LoadData.spell_data.size()):
+		spell_panel.get_node("Spells").add_item( LoadData.spell_data[i].name, load("res://resources/spell_icons/" + LoadData.spell_data[i].name + ".png"))
+		spell_panel.get_node("Spells").set_item_tooltip_enabled(i, true)
+		spell_panel.get_node("Spells").set_item_tooltip(i, LoadData.spell_data[i].description)
 		
 	current_state = STATES.PLAYER    # Set the current state as PLAYER
 	handle_states()    # Do things based on the current state
@@ -172,3 +178,11 @@ func _handle_enemy_turn():
 # When attack is pressed
 func _on_Attack_pressed():
 	_handle_player_turn("attack")
+
+
+func _on_Spells_pressed():
+	spell_panel.show()
+
+
+func _on_SpellExit_pressed():
+	spell_panel.hide()

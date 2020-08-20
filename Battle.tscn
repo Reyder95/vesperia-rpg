@@ -179,6 +179,39 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="SpellPanel" type="Panel" parent="UI"]
+visible = false
+margin_left = 408.0
+margin_top = 128.0
+margin_right = 1536.0
+margin_bottom = 704.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Spells" type="ItemList" parent="UI/SpellPanel"]
+margin_left = 24.0
+margin_top = 40.0
+margin_right = 1112.0
+margin_bottom = 472.0
+hint_tooltip = "hoi"
+custom_fonts/font = ExtResource( 2 )
+auto_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpellExit" type="Button" parent="UI/SpellPanel"]
+margin_left = 1040.0
+margin_top = 16.0
+margin_right = 1116.0
+margin_bottom = 60.0
+custom_fonts/font = ExtResource( 2 )
+text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="BattleRight" type="Node2D" parent="."]
 
 [node name="pos1" type="Node2D" parent="BattleRight"]
@@ -207,6 +240,7 @@ position = Vector2( 256, 448 )
 [node name="pos4" type="Node2D" parent="BattleLeft"]
 position = Vector2( 256, 640 )
 [connection signal="pressed" from="UI/BottomPanel/BattleUI/Attack" to="." method="_on_Attack_pressed"]
-[connection signal="pressed" from="UI/BottomPanel/BattleUI/Spells" to="." method="_on_Attack_pressed"]
+[connection signal="pressed" from="UI/BottomPanel/BattleUI/Spells" to="." method="_on_Spells_pressed"]
 [connection signal="pressed" from="UI/BottomPanel/BattleUI/Items" to="." method="_on_Attack_pressed"]
 [connection signal="pressed" from="UI/BottomPanel/BattleUI/Run" to="." method="_on_Attack_pressed"]
+[connection signal="pressed" from="UI/SpellPanel/SpellExit" to="." method="_on_SpellExit_pressed"]

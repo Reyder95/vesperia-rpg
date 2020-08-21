@@ -212,6 +212,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ChooseEnemy" type="PopupMenu" parent="UI"]
+margin_left = 624.0
+margin_top = 264.0
+margin_right = 1216.0
+margin_bottom = 536.0
+custom_fonts/font = ExtResource( 2 )
+
 [node name="BattleRight" type="Node2D" parent="."]
 
 [node name="pos1" type="Node2D" parent="BattleRight"]
@@ -245,3 +252,4 @@ position = Vector2( 256, 640 )
 [connection signal="pressed" from="UI/BottomPanel/BattleUI/Run" to="." method="_on_Attack_pressed"]
 [connection signal="item_activated" from="UI/SpellPanel/Spells" to="." method="_on_Spells_item_activated"]
 [connection signal="pressed" from="UI/SpellPanel/SpellExit" to="." method="_on_SpellExit_pressed"]
+[connection signal="id_pressed" from="UI/ChooseEnemy" to="." method="_on_ChooseEnemy_id_pressed"]

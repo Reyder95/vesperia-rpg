@@ -23,9 +23,9 @@ func load_stats(character, index):
 	character.maximum_health = 100 + ((character.level - 1) * 25)
 	character.current_health = save_game_data.characters[0].current_health
 	character.attack = 50 + ((character.level - 1) * 10)
-	character.strength = LoadData.player_data[index].strength_multiplier * (100 + ((character.level - 1) * 25))
-	character.dexterity = LoadData.player_data[index].dexterity_multiplier * (100 + ((character.level - 1) * 25))
-	character.intelligence = LoadData.player_data[index].intelligence_multiplier * (100 + ((character.level - 1) * 25))
+	character.strength = LoadData.player_data[index].strength_multiplier * (10 + ((character.level - 1) * 25))
+	character.dexterity = LoadData.player_data[index].dexterity_multiplier * (10 + ((character.level - 1) * 25))
+	character.intelligence = LoadData.player_data[index].intelligence_multiplier * (10 + ((character.level - 1) * 25))
 	character.armor = LoadData.player_data[index].armor_multiplier * (5 + ((character.level - 1) * 2) + character.strength)
 	character.magicka = character.intelligence + ((character.level - 1) * 2)
 	

@@ -16,6 +16,7 @@ export var armor : int    # Reduces damage taken
 export var strength : int    # Increases raw strength damage dealt (harder hitting weapons)
 export var dexterity : int    # Increases nimble / agile damage dealt (lighter but faster hitting weapons)
 export var intelligence : int     # Increases magic damage dealt and maximum amount of magicka stored
+export var magicka : int
 
 # Print the stats of the current object
 func print_stats():
@@ -28,6 +29,7 @@ func print_stats():
 	print("Strength: " + str(strength))
 	print("Dexterity: " + str(dexterity))
 	print("Intelligence: " + str(intelligence))
+	print("Magicka: " + str(magicka))
 
 # Do some damage to an entity
 func _attack_entity(entity):
@@ -35,10 +37,13 @@ func _attack_entity(entity):
 	
 # Receive damage and handle it
 func _take_damage(damage):
+	# DEBUG: Will definitely modify the damage formulas
 	current_health -= damage    # Reduce current amount of health
 	
 	# If health is below 0, set it to 0
 	if current_health < 0:
 		current_health = 0
+		
+		return damage;
 		
 

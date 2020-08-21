@@ -19,7 +19,7 @@ onready var spell_panel = $UI/SpellPanel
 onready var state_label = $UI/State    # DEBUG: Displays state on screen
 onready var choose_enemy = $UI/ChooseEnemy    # Choose Enemy Dialogue
 
-var player_spells
+var player_spells = Array()
 
 var player_attack_choice
 var player_spell_choice
@@ -34,15 +34,11 @@ enum STATES {
 
 # Initialize the battle
 func _ready():
-	
-	
-	
+
 	player_spells = preload("res://Spells.tscn").instance()
 	
 	# DEBUG: Just pushes one playable character, will be adjusted to support all the playable characters
 	players.push_back(PlayerData.char1)
-	
-	
 	
 	# Generate the enemies that will be used in the battle.
 	for i in range(0, LoadData.enemy_data.size()):
@@ -118,6 +114,7 @@ func load_stats(scene, enemy_object):
 	scene.dexterity = enemy_object.stats.dexterity
 	scene.intelligence = enemy_object.stats.intelligence
 	
+	
 	scene.print_stats()    # DEBUG: Print stats to see if things worked
 	print("")   # Print an extra line to separate
 
@@ -140,11 +137,14 @@ func handle_states():
 
 # When someone does damage, this is the function that is called
 func _handle_damage_dealt(attacker, target, number, side, type):
+	
 	if type == "attack":
 		attacker._attack_entity(target)    # Make the attacker attack the target
 	
 	if target.current_health == 0:
-		print(target.char_name + " is dead")
+		if current_state == STATES.PLAYER:
+			enemies.remove(number - 1)
+			_handle_enemy_choice_render()
 	
 	# Use side to determine which side to modify the HP of
 	if side == "right":
@@ -191,9 +191,14 @@ func _handle_enemy_turn():
 	current_state = STATES.PLAYER
 	handle_states()
 	
+func _handle_enemy_choice_render():
+	choose_enemy.clear()
+	
+	for i in range(0, enemies.size()):
+		choose_enemy.add_icon_item(load("res://resources/spell_icons/Fireball.png"), enemies[i].char_name)
+	
 # When attack is pressed
 func _on_Attack_pressed():
-	interface.hide()
 	player_attack_choice = "attack"
 	choose_enemy.popup()
 
@@ -212,29 +217,30 @@ func _on_Spells_item_activated(index):
 	player_attack_choice = "spell"
 	
 	player_spell_choice = spell_panel.get_node("Spells").get_item_metadata(index)
+
 	
 	choose_enemy.popup()
-	
-	
-
 
 func _on_ChooseEnemy_id_pressed(id):
 	if player_attack_choice == "attack":
+		interface.hide()
 		_handle_player_turn("attack", id)
 	elif player_attack_choice == "spell":
-		if player_turn_order.size() <= 1:
-			interface.hide()
+		if player_spells.get_node(str(player_spell_choice))._use_magicka(player_turn_order[0]):
+			
+			if player_turn_order.size() <= 1:
+				interface.hide()
 	
-		enemies[id].add_child(load("res://resources/Animations/Effects/Spell_" + str(player_spell_choice) + ".tscn").instance())
+			enemies[id].add_child(load("res://resources/Animations/Effects/Spell_" + str(player_spell_choice) + ".tscn").instance())
 	
-		var myChild = enemies[id].get_node("Spell")
-		myChild.play("effect")
-		yield(myChild, "animation_finished")
-		enemies[id].remove_child(myChild)
+			var myChild = enemies[id].get_node("Spell")
+			myChild.play("effect")
+			yield(myChild, "animation_finished")
+			enemies[id].remove_child(myChild)
 	
-		player_spells.get_node(str(player_spell_choice))._cast_spell(player_turn_order[0], enemies[id])
+			player_spells.get_node(str(player_spell_choice))._cast_spell(player_turn_order[0], enemies[id])
 	
-		_handle_damage_dealt(player_turn_order[0], enemies[id], id + 1, "left", "spell")
+			_handle_damage_dealt(player_turn_order[0], enemies[id], id + 1, "left", "spell")
 	
-		current_state = STATES.ENEMY
-		handle_states()
+			current_state = STATES.ENEMY
+			handle_states()

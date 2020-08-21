@@ -18,6 +18,7 @@ func _ready():
 func load_stats(character, index):
 	print(save_game_data.characters[0].current_health)
 	character.level = save_game_data.characters[0].level
+	character.level = 1    # Character level override
 	character.char_name = LoadData.player_data[index].name
 	character.maximum_health = 100 + ((character.level - 1) * 25)
 	character.current_health = save_game_data.characters[0].current_health
@@ -26,6 +27,7 @@ func load_stats(character, index):
 	character.dexterity = LoadData.player_data[index].dexterity_multiplier * (100 + ((character.level - 1) * 25))
 	character.intelligence = LoadData.player_data[index].intelligence_multiplier * (100 + ((character.level - 1) * 25))
 	character.armor = LoadData.player_data[index].armor_multiplier * (5 + ((character.level - 1) * 2) + character.strength)
+	character.magicka = character.intelligence + ((character.level - 1) * 2)
 	
 func load_data():
 	var save_dict = {

@@ -11,10 +11,20 @@ enum Elements {
 	ELECTRIC
 }
 
-export var spellname : String
-export var spellpower : int
-export var spellcost : int
+var spellname
+var spellpower 
+var spellcost 
 var element    # The element of the spell
+
+func _init():
+	pass
+
+func _use_magicka(character):
+	if character.magicka < spellcost:
+		return false
+	else:
+		character.magicka -= spellcost
+		return true
 
 func _cast_spell(user, target):
 	pass

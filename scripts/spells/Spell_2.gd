@@ -1,6 +1,6 @@
 extends "res://scripts/Spell.gd"
 
-func _ready():
+func _init():
 	spellname = "Ice Beam"
 	spellpower = 80
 	spellcost = 10
@@ -8,4 +8,4 @@ func _ready():
 	
 func _cast_spell(user, target):
 	var damage = user.intelligence + spellpower
-	target._take_damage(damage)
+	return target._take_damage(damage)

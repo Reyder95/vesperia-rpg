@@ -2,12 +2,12 @@
     {
         "id": 1,
         "name": "Demon",
-        "attack": 26,
+        "attack": 10,
         "armor": 13,
         "custom_logic": 0,
         "level": 1,
-        "max_health": 220,
-        "current_health": 220,
+        "max_health": 130,
+        "current_health": 130,
         "stats": {
             "strength": 18,
             "dexterity": 23,
@@ -17,7 +17,7 @@
     {
         "id": 2,
         "name": "Serpent",
-        "attack": 30,
+        "attack": 17,
         "armor": 13,
         "custom_logic": 0,
         "level": 1,

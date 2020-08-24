@@ -7,7 +7,6 @@ var player_turn_order = Array()    # The current queue of turns that will go thr
 var enemy_turn_order = Array()    # The current queue of turns that will go through for enemies
 
 var current_state = null    # The current state of the battle
-var inAction = false
 
 # Set of nodes that will be used during the battle
 onready var interface = $UI/BottomPanel/BattleUI    # The battle interface that will be shown and hidden depending on who's turn it is
@@ -17,7 +16,8 @@ onready var left_side = $BattleLeft    # The left side of entities in the battle
 onready var left_side_hp = $UI/LeftHP    # The health for the left side of entities
 onready var spell_panel = $UI/SpellPanel
 onready var state_label = $UI/State    # DEBUG: Displays state on screen
-onready var choose_enemy = $UI/ChooseEnemy    # Choose Enemy Dialogue
+onready var choose_enemy_panel = $UI/ChooseEnemyPanel
+onready var choose_enemy = $UI/ChooseEnemyPanel/ChooseEnemy    # Choose Enemy Dialogue
 
 var player_spells = Array()
 
@@ -29,7 +29,8 @@ enum STATES {
 	PLAYER,
 	ENEMY,
 	WIN,
-	LOSE
+	LOSE,
+	RUN
 }
 
 # Initialize the battle
@@ -39,6 +40,7 @@ func _ready():
 	
 	# DEBUG: Just pushes one playable character, will be adjusted to support all the playable characters
 	players.push_back(PlayerData.char1)
+	players.push_back(PlayerData.char2)
 	
 	# Generate the enemies that will be used in the battle.
 	for i in range(0, LoadData.enemy_data.size()):
@@ -68,7 +70,8 @@ func _ready():
 		
 		# Set up the HP UI for each player. Show it, then set it correctly
 		right_side_hp.get_node("pos" + str(i+1)).show()
-		right_side_hp.get_node("pos" + str(i+1)).text = "Health: " + str(player.current_health) + "/" + str(player.maximum_health)
+		right_side_hp.get_node("pos" + str(i+1)).text = str(player.current_health) + "/" + str(player.maximum_health)
+		right_side_hp.get_node("pos" + str(i+1)).get_children()[0].text = player.char_name
 		
 		player.print_stats()    # DEBUG: Just display stats to the console
 		
@@ -83,9 +86,10 @@ func _ready():
 		
 		# Set the left side's HP UI
 		left_side_hp.get_node("pos" + str(i+1)).show()
-		left_side_hp.get_node("pos" + str(i+1)).text = "Health: " + str(enemy.current_health) + "/" + str(enemy.maximum_health)
+		left_side_hp.get_node("pos" + str(i+1)).text = str(enemy.current_health) + "/" + str(enemy.maximum_health)
 		
 		choose_enemy.add_icon_item(load("res://resources/spell_icons/Fireball.png"), enemies[i].char_name)
+		choose_enemy.set_item_metadata(i, i)
 		
 	for i in range(0, LoadData.spell_data.size()):
 		spell_panel.get_node("Spells").add_item( LoadData.spell_data[i].name, load("res://resources/spell_icons/" + LoadData.spell_data[i].name + ".png"))
@@ -100,6 +104,7 @@ func _process(delta):
 	if Input.is_action_pressed("ui_down"):
 		PlayerData.save_data()
 		print("Saved!")
+		
 
 # Load the stats of the enemy
 func load_stats(scene, enemy_object):
@@ -143,15 +148,13 @@ func _handle_damage_dealt(attacker, target, number, side, type):
 	
 	if target.current_health == 0:
 		if current_state == STATES.PLAYER:
-			enemies.remove(number - 1)
 			_handle_enemy_choice_render()
 	
 	# Use side to determine which side to modify the HP of
 	if side == "right":
-		right_side_hp.get_node("pos" + str(number)).text = "Health: " + str(target.current_health) + "/" + str(target.maximum_health)
+		right_side_hp.get_node("pos" + str(number)).text = str(target.current_health) + "/" + str(target.maximum_health)
 	elif side == "left":
-		print("pos" + str(number))
-		left_side_hp.get_node("pos" + str(number)).text = "Health: " + str(target.current_health) + "/" + str(target.maximum_health)
+		left_side_hp.get_node("pos" + str(number)).text = str(target.current_health) + "/" + str(target.maximum_health)
 
 # When the player does their turn
 func _handle_player_turn(choice, target_index):
@@ -161,8 +164,9 @@ func _handle_player_turn(choice, target_index):
 			player_turn_order[0].get_node("AnimatedSprite").play("attack")
 			yield(player_turn_order[0].get_node("AnimatedSprite"), "animation_finished")
 			player_turn_order[0].get_node("AnimatedSprite").play("idle")
+			print(target_index)
 			
-			_handle_damage_dealt(player_turn_order[0], enemies[target_index], target_index +1, "left", "attack")    # Deal damage to target
+			_handle_damage_dealt(player_turn_order[0], enemies[target_index], target_index + 1, "left", "attack")    # Deal damage to target
 			player_turn_order.pop_front()    # Remove player from the turn order
 			
 			# If there is nobody left, set state to ENEMY and handle that state
@@ -174,16 +178,18 @@ func _handle_player_turn(choice, target_index):
 func _handle_enemy_turn():
 	while enemy_turn_order.size() > 0:    # While there are still enemies left to go
 		
-		yield(get_tree().create_timer(1.0), "timeout")    # Add some break between enemies going
+		if enemy_turn_order[0].current_health > 0:
 		
-		# Handle enemy attack animations
-		enemy_turn_order[0].get_node("AnimatedSprite").play("attack")
-		yield(enemy_turn_order[0].get_node("AnimatedSprite"), "animation_finished")
-		enemy_turn_order[0].get_node("AnimatedSprite").play("idle")
+			yield(get_tree().create_timer(1.0), "timeout")    # Add some break between enemies going
 		
-		# Deal damage to a random target
-		var randomTarget = randi() % players.size()
-		_handle_damage_dealt(enemy_turn_order[0], players[randomTarget], randomTarget+1, "right", "attack")
+			# Handle enemy attack animations
+			enemy_turn_order[0].get_node("AnimatedSprite").play("attack")
+			yield(enemy_turn_order[0].get_node("AnimatedSprite"), "animation_finished")
+			enemy_turn_order[0].get_node("AnimatedSprite").play("idle")
+		
+			# Deal damage to a random target
+			var randomTarget = randi() % players.size()
+			_handle_damage_dealt(enemy_turn_order[0], players[randomTarget], randomTarget+1, "right", "attack")
 		
 		enemy_turn_order.pop_front()    # Remove this person from the turn queue
 	
@@ -196,6 +202,9 @@ func _handle_enemy_choice_render():
 	
 	for i in range(0, enemies.size()):
 		choose_enemy.add_icon_item(load("res://resources/spell_icons/Fireball.png"), enemies[i].char_name)
+		
+		if enemies[i].current_health <= 0:
+			choose_enemy.set_item_disabled(i, true)
 	
 # When attack is pressed
 func _on_Attack_pressed():
@@ -218,15 +227,17 @@ func _on_Spells_item_activated(index):
 	
 	player_spell_choice = spell_panel.get_node("Spells").get_item_metadata(index)
 
-	
 	choose_enemy.popup()
 
 func _on_ChooseEnemy_id_pressed(id):
 	if player_attack_choice == "attack":
-		interface.hide()
+		if player_turn_order.size() <= 1:
+			interface.hide()
 		_handle_player_turn("attack", id)
 	elif player_attack_choice == "spell":
+		print(player_turn_order.size())
 		if player_spells.get_node(str(player_spell_choice))._use_magicka(player_turn_order[0]):
+			
 			
 			if player_turn_order.size() <= 1:
 				interface.hide()
@@ -241,6 +252,8 @@ func _on_ChooseEnemy_id_pressed(id):
 			player_spells.get_node(str(player_spell_choice))._cast_spell(player_turn_order[0], enemies[id])
 	
 			_handle_damage_dealt(player_turn_order[0], enemies[id], id + 1, "left", "spell")
-	
-			current_state = STATES.ENEMY
-			handle_states()
+			
+			player_turn_order.pop_front()
+			if player_turn_order.size() == 0:
+				current_state = STATES.ENEMY
+				handle_states()

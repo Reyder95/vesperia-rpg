@@ -33,17 +33,22 @@ func print_stats():
 
 # Do some damage to an entity
 func _attack_entity(entity):
-	entity._take_damage(attack)
+	randomize()
+	var randomDamage = randi() % (attack+10) + attack-10;
+	entity._take_damage(randomDamage)
 	
 # Receive damage and handle it
 func _take_damage(damage):
-	# DEBUG: Will definitely modify the damage formulas
-	current_health -= damage    # Reduce current amount of health
+	
+	var total_damage_dealt = floor(damage * (100 / (100 + float(armor))))
+	
+	current_health -= total_damage_dealt    # Reduce current amount of health
+	
 	
 	# If health is below 0, set it to 0
 	if current_health < 0:
 		current_health = 0
 		
-		return damage;
+	return total_damage_dealt;
 		
 

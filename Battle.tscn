@@ -82,10 +82,27 @@ __meta__ = {
 [node name="pos1" type="Label" parent="UI/RightHP"]
 visible = false
 margin_left = 1536.0
-margin_top = 24.0
-margin_right = 1639.0
-margin_bottom = 38.0
-text = "Health: 100/100"
+margin_top = 800.0
+margin_right = 1662.0
+margin_bottom = 838.0
+custom_fonts/font = ExtResource( 2 )
+text = "100/100"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="name3" type="Label" parent="UI/RightHP/pos1"]
+anchor_left = -0.762
+anchor_top = 3.158
+anchor_right = -0.762
+anchor_bottom = 3.158
+margin_left = -23.988
+margin_top = -120.004
+margin_right = 45.012
+margin_bottom = -82.004
+custom_fonts/font = ExtResource( 2 )
+text = "Name"
+align = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -93,10 +110,26 @@ __meta__ = {
 [node name="pos2" type="Label" parent="UI/RightHP"]
 visible = false
 margin_left = 1536.0
-margin_top = 192.0
-margin_right = 1639.0
-margin_bottom = 206.0
-text = "Health: 100/100"
+margin_top = 848.0
+margin_right = 1662.0
+margin_bottom = 886.0
+custom_fonts/font = ExtResource( 2 )
+text = "100/100"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="name2" type="Label" parent="UI/RightHP/pos2"]
+anchor_left = -0.825
+anchor_top = 0.5
+anchor_right = -0.825
+anchor_bottom = 0.5
+margin_left = -16.05
+margin_top = -19.0
+margin_right = 52.95
+margin_bottom = 19.0
+custom_fonts/font = ExtResource( 2 )
+text = "Name"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -104,18 +137,53 @@ __meta__ = {
 [node name="pos3" type="Label" parent="UI/RightHP"]
 visible = false
 margin_left = 1536.0
-margin_top = 344.0
-margin_right = 1639.0
-margin_bottom = 358.0
-text = "Health: 100/100"
+margin_top = 896.0
+margin_right = 1662.0
+margin_bottom = 934.0
+custom_fonts/font = ExtResource( 2 )
+text = "100/100"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="name3" type="Label" parent="UI/RightHP/pos3"]
+anchor_left = -0.825
+anchor_top = 0.5
+anchor_right = -0.825
+anchor_bottom = 0.5
+margin_left = -16.05
+margin_top = -19.0
+margin_right = 52.95
+margin_bottom = 19.0
+custom_fonts/font = ExtResource( 2 )
+text = "Name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="pos4" type="Label" parent="UI/RightHP"]
 visible = false
-margin_left = 1544.0
-margin_top = 544.0
-margin_right = 1647.0
-margin_bottom = 558.0
-text = "Health: 100/100"
+margin_left = 1536.0
+margin_top = 944.0
+margin_right = 1662.0
+margin_bottom = 982.0
+custom_fonts/font = ExtResource( 2 )
+text = "100/100"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="name4" type="Label" parent="UI/RightHP/pos4"]
+anchor_left = -0.825
+anchor_top = 0.5
+anchor_right = -0.825
+anchor_bottom = 0.5
+margin_left = -16.05
+margin_top = -19.0
+margin_right = 52.95
+margin_bottom = 19.0
+custom_fonts/font = ExtResource( 2 )
+text = "Name"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -212,12 +280,30 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ChooseEnemy" type="PopupMenu" parent="UI"]
-margin_left = 624.0
-margin_top = 264.0
-margin_right = 1216.0
-margin_bottom = 536.0
+[node name="ChooseEnemyPanel" type="Panel" parent="UI"]
+visible = false
+anchor_bottom = 0.2
+margin_left = 552.0
+margin_top = 200.0
+margin_right = 1288.0
+margin_bottom = 624.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ChooseEnemy" type="PopupMenu" parent="UI/ChooseEnemyPanel"]
+anchor_left = 0.402
+anchor_top = 0.389
+anchor_right = 0.402
+anchor_bottom = 0.389
+margin_left = -151.872
+margin_top = -184.048
+margin_right = 440.128
+margin_bottom = 143.952
 custom_fonts/font = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="BattleRight" type="Node2D" parent="."]
 
@@ -252,4 +338,4 @@ position = Vector2( 256, 640 )
 [connection signal="pressed" from="UI/BottomPanel/BattleUI/Run" to="." method="_on_Attack_pressed"]
 [connection signal="item_activated" from="UI/SpellPanel/Spells" to="." method="_on_Spells_item_activated"]
 [connection signal="pressed" from="UI/SpellPanel/SpellExit" to="." method="_on_SpellExit_pressed"]
-[connection signal="id_pressed" from="UI/ChooseEnemy" to="." method="_on_ChooseEnemy_id_pressed"]
+[connection signal="id_pressed" from="UI/ChooseEnemyPanel/ChooseEnemy" to="." method="_on_ChooseEnemy_id_pressed"]

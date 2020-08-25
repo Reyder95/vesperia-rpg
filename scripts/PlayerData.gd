@@ -1,31 +1,31 @@
 extends Node
 
-var char1 = preload("res://entities/Playable.tscn").instance()    # DEBUG: First character initialize as "Playable" scene
+var char1 = preload("res://entities/Playable.tscn").instance()
+var char2 = preload("res://entities/Playable.tscn").instance()    # DEBUG: First character initialize as "Playable" scene
 var save_game_data
 
 # When game starts
 func _ready():
 	
-
-	
 	# Add child 
 	char1.add_child(preload("res://resources/Animations/Playable/Ryuko.tscn").instance())
+	char2.add_child(preload("res://resources/Animations/Playable/Ryuko.tscn").instance())
 	load_data()
 	load_stats(char1, 0)
+	load_stats(char2, 0)
 	
 
 
 func load_stats(character, index):
-	print(save_game_data.characters[0].current_health)
 	character.level = save_game_data.characters[0].level
 	character.level = 1    # Character level override
 	character.char_name = LoadData.player_data[index].name
 	character.maximum_health = 100 + ((character.level - 1) * 25)
 	character.current_health = save_game_data.characters[0].current_health
 	character.attack = 50 + ((character.level - 1) * 10)
-	character.strength = LoadData.player_data[index].strength_multiplier * (100 + ((character.level - 1) * 25))
-	character.dexterity = LoadData.player_data[index].dexterity_multiplier * (100 + ((character.level - 1) * 25))
-	character.intelligence = LoadData.player_data[index].intelligence_multiplier * (100 + ((character.level - 1) * 25))
+	character.strength = LoadData.player_data[index].strength_multiplier * (10 + ((character.level - 1) * 25))
+	character.dexterity = LoadData.player_data[index].dexterity_multiplier * (10 + ((character.level - 1) * 25))
+	character.intelligence = LoadData.player_data[index].intelligence_multiplier * (10 + ((character.level - 1) * 25))
 	character.armor = LoadData.player_data[index].armor_multiplier * (5 + ((character.level - 1) * 2) + character.strength)
 	character.magicka = character.intelligence + ((character.level - 1) * 2)
 	

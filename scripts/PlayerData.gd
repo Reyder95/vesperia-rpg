@@ -2,6 +2,7 @@ extends Node
 
 var char1 = preload("res://entities/Playable.tscn").instance()
 var char2 = preload("res://entities/Playable.tscn").instance()    # DEBUG: First character initialize as "Playable" scene
+var inventory = preload("res://Inventory.tscn").instance()
 var save_game_data
 
 # When game starts
@@ -13,8 +14,17 @@ func _ready():
 	load_data()
 	load_stats(char1, 0)
 	load_stats(char2, 0)
+	load_player_inventory()
 	
-
+func load_player_inventory():
+	var health_potion = LoadData.items.get_node("1")
+	inventory._add_item(health_potion)
+	inventory._add_item(health_potion)
+	print(inventory.items[0].item.item_name)
+	print(inventory.items[0].quantity)
+	print(inventory.items[1].item.item_name)
+	print(inventory.items[1].quantity)
+	
 
 func load_stats(character, index):
 	character.level = save_game_data.characters[0].level

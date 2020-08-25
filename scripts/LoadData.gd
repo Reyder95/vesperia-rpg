@@ -3,6 +3,7 @@ extends Node
 var enemy_data    # All of the enemies in the game as JSON
 var player_data    # All of the playable characters in the game as JSON
 var spell_data    # All of the spells in the game as JSON
+var items
 
 # When game starts
 func _ready():
@@ -29,3 +30,5 @@ func _ready():
 	spelldata_file.close()
 	spell_data = spelldata_json.result
 	print(spell_data[0])
+	
+	items = preload("res://Items.tscn").instance()

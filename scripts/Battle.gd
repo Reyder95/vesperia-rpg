@@ -150,11 +150,8 @@ func _handle_damage_dealt(attacker, target, number, side, type):
 		if current_state == STATES.PLAYER:
 			_handle_enemy_choice_render()
 	
-	# Use side to determine which side to modify the HP of
-	if side == "right":
-		right_side_hp.get_node("pos" + str(number)).text = str(target.current_health) + "/" + str(target.maximum_health)
-	elif side == "left":
-		left_side_hp.get_node("pos" + str(number)).text = str(target.current_health) + "/" + str(target.maximum_health)
+	# Use side to determine which side to modify the HP
+	_update_health(side, number, target)
 
 # When the player does their turn
 func _handle_player_turn(choice, target_index):
@@ -166,7 +163,7 @@ func _handle_player_turn(choice, target_index):
 			player_turn_order[0].get_node("AnimatedSprite").play("idle")
 			print(target_index)
 			
-			_handle_damage_dealt(player_turn_order[0], enemies[target_index], target_index + 1, "left", "attack")    # Deal damage to target
+			_handle_damage_dealt(player_turn_order[0], enemies[target_index], target_index, "left", "attack")    # Deal damage to target
 			player_turn_order.pop_front()    # Remove player from the turn order
 			
 			# If there is nobody left, set state to ENEMY and handle that state
@@ -189,13 +186,19 @@ func _handle_enemy_turn():
 		
 			# Deal damage to a random target
 			var randomTarget = randi() % players.size()
-			_handle_damage_dealt(enemy_turn_order[0], players[randomTarget], randomTarget+1, "right", "attack")
+			_handle_damage_dealt(enemy_turn_order[0], players[randomTarget], randomTarget, "right", "attack")
 		
 		enemy_turn_order.pop_front()    # Remove this person from the turn queue
 	
 	# When nobody is left, set state to PLAYER
 	current_state = STATES.PLAYER
 	handle_states()
+	
+func _update_health(side, index, target):
+	if side == "right":
+		right_side_hp.get_node("pos" + str(index + 1)).text = str(target.current_health) + "/" + str(target.maximum_health)
+	elif side == "left":
+		left_side_hp.get_node("pos" + str(index + 1)).text = str(target.current_health) + "/" + str(target.maximum_health)
 	
 func _handle_enemy_choice_render():
 	choose_enemy.clear()
@@ -235,9 +238,7 @@ func _on_ChooseEnemy_id_pressed(id):
 			interface.hide()
 		_handle_player_turn("attack", id)
 	elif player_attack_choice == "spell":
-		print(player_turn_order.size())
 		if player_spells.get_node(str(player_spell_choice))._use_magicka(player_turn_order[0]):
-			
 			
 			if player_turn_order.size() <= 1:
 				interface.hide()
@@ -251,7 +252,7 @@ func _on_ChooseEnemy_id_pressed(id):
 	
 			player_spells.get_node(str(player_spell_choice))._cast_spell(player_turn_order[0], enemies[id])
 	
-			_handle_damage_dealt(player_turn_order[0], enemies[id], id + 1, "left", "spell")
+			_handle_damage_dealt(player_turn_order[0], enemies[id], id, "left", "spell")
 			
 			player_turn_order.pop_front()
 			if player_turn_order.size() == 0:

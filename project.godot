@@ -14,6 +14,26 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/Entity.gd"
 }, {
+"base": "Node",
+"class": "Inventory",
+"language": "GDScript",
+"path": "res://scripts/Inventory.gd"
+}, {
+"base": "Node2D",
+"class": "InventoryItem",
+"language": "GDScript",
+"path": "res://InventoryItem.gd"
+}, {
+"base": "Node",
+"class": "Item",
+"language": "GDScript",
+"path": "res://scripts/Item.gd"
+}, {
+"base": "Node",
+"class": "Item_1",
+"language": "GDScript",
+"path": "res://scripts/items/Item_1.gd"
+}, {
 "base": "Node2D",
 "class": "Spell",
 "language": "GDScript",
@@ -26,6 +46,10 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "CharacterEntity": "",
+"Inventory": "",
+"InventoryItem": "",
+"Item": "",
+"Item_1": "",
 "Spell": "",
 "Spell_1": ""
 }
@@ -40,6 +64,7 @@ config/icon="res://icon.png"
 
 LoadData="*res://scripts/LoadData.gd"
 PlayerData="*res://scripts/PlayerData.gd"
+GlobalEnums="*res://scripts/GlobalEnums.gd"
 
 [display]
 
